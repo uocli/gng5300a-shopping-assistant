@@ -6,8 +6,8 @@ const Question = (props) => {
   const { loading } = props;
   return (
     <Grid container size={12}>
-      <Grid size={2}></Grid>
-      <Grid size={8}>
+      <Grid size={3}></Grid>
+      <Grid size={6}>
         <Box
           component="form"
           sx={{ m: 2 }}
@@ -23,25 +23,18 @@ const Question = (props) => {
             justifyContent="flex-end"
             alignItems="center"
           >
-            <Grid size={9}>
-              <TextField
-                disabled={loading}
-                fullWidth
-                label="Type in your question here"
-                id="fullWidth"
-                value={userQuery}
-                onChange={(e) => setUserQuery(e.target.value)}
-              />
-            </Grid>
-            <Grid size={3}>
-              <Button variant="contained" type="submit">
-                Submit
-              </Button>
-            </Grid>
+            <TextField
+              disabled={loading}
+              fullWidth
+              label="Type in your question here"
+              id="fullWidth"
+              value={userQuery}
+              onChange={(e) => setUserQuery(e.target.value)}
+            />
           </Grid>
         </Box>
       </Grid>
-      <Grid size={2}></Grid>
+      <Grid size={3}></Grid>
     </Grid>
   );
 };

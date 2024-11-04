@@ -4,8 +4,8 @@ const Response = (props) => {
   const { response } = props || {};
   return (
     <Grid container size={12}>
-      <Grid size={2}></Grid>
-      <Grid size={8}>
+      <Grid size={3}></Grid>
+      <Grid size={6}>
         <Box component="form" sx={{ m: 2 }}>
           <Grid
             container
@@ -13,24 +13,21 @@ const Response = (props) => {
             justifyContent="flex-end"
             alignItems="center"
           >
-            <Grid size={9}>
-              <TextField
-                label="Response"
-                fullWidth
-                defaultValue=""
-                value={response || ""}
-                slotProps={{
-                  input: {
-                    readOnly: true,
-                  },
-                }}
-              />
-            </Grid>
-            <Grid size={3}></Grid>
+            <TextField
+              label="Response"
+              fullWidth
+              defaultValue=""
+              value={response || ""}
+              slotProps={{
+                input: {
+                  readOnly: true,
+                },
+              }}
+            />
           </Grid>
         </Box>
       </Grid>
-      <Grid size={2}></Grid>
+      <Grid size={3}></Grid>
     </Grid>
   );
 };
