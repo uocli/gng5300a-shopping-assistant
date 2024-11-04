@@ -5,7 +5,6 @@ from typing import Annotated
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import Runnable, RunnableConfig
-from typing_extensions import TypedDict
 
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
@@ -47,10 +46,15 @@ class Assistant:
 # You can update the LLMs, though you may need to update the prompts
 
 
+# llm = ChatOpenAI(
+#     base_url="https://api.studio.nebius.ai/v1/",
+#     api_key=os.getenv("NEBIUS_API_KEY"),
+#     model="meta-llama/Meta-Llama-3.1-70B-Instruct",
+# )
+
 llm = ChatOpenAI(
-    base_url="https://api.studio.nebius.ai/v1/",
-    api_key=os.getenv("NEBIUS_API_KEY"),
-    model="meta-llama/Meta-Llama-3.1-70B-Instruct",
+    api_key=os.getenv("OPENAI_API_KEY"),
+    model="gpt-3.5-turbo",
 )
 
 
@@ -70,7 +74,10 @@ assistant_prompt = ChatPromptTemplate.from_messages(
 ).partial(time=datetime.now())
 
 # "Read"-only tools (such as retrievers) don't need a user confirmation to use
-safe_tools = [TavilySearchResults(max_results=1), fetch_user_order_information]
+safe_tools = [
+    TavilySearchResults(max_results=1),
+    fetch_user_order_information,
+]
 
 # These tools all change the user's reservations.
 # The user has the right to control what decisions are made

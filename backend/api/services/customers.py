@@ -13,8 +13,7 @@ def fetch_user_order_information(config: RunnableConfig) -> list[dict]:
     """Fetch all orders for the user along with corresponding product information.
 
     Returns:
-        A list of dictionaries where each dictionary contains the ticket details,
-        associated flight details, and the seat assignments for each ticket belonging to the user.
+        A list of dictionaries where each dictionary contains the order details, including the products.
     """
     configuration = config.get("configurable", {})
     customer_id = configuration.get("customer_id", None)
@@ -28,8 +27,6 @@ def fetch_user_order_information(config: RunnableConfig) -> list[dict]:
     for order in orders:
         order_to_items = {order.id: [ProductSerializer(order.products, many=True).data]}
         order_items.append(order_to_items)
-
-    # results = OrderSerializer(orders, many=True).data
 
     return order_items
 
