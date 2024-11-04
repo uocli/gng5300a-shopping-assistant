@@ -1,11 +1,9 @@
 import os
 from datetime import datetime
-from typing import Annotated
 
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import Runnable, RunnableConfig
-
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 
