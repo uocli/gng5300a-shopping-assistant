@@ -6,6 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import LinearProgressBar from "./components/LinearProgressBar";
 import Customer from "./components/Customer";
+import http from "./helpers/http-common";
 
 const App = () => {
   const [customerID, setCustomerID] = useState("");
@@ -13,8 +14,8 @@ const App = () => {
   const [response, setResponse] = useState("");
   const handleSubmit = (userQuery) => {
     setLoading(true);
-    axios
-      .post("/api/query/", { query: userQuery })
+    http
+      .post("/query/", { query: userQuery, customerID: +customerID })
       .then((r) => {
         setResponse(r.data.message);
       })
