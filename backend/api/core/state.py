@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from typing import Annotated
 
@@ -55,6 +56,7 @@ llm = ChatOpenAI(
     api_key=os.getenv("NEBIUS_API_KEY"),
     model="meta-llama/Meta-Llama-3.1-70B-Instruct",
 )
+
 
 assistant_prompt = ChatPromptTemplate.from_messages(
     [
