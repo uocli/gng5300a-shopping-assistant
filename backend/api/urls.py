@@ -1,5 +1,7 @@
-from django.urls import path, include
+from django.urls import path
+
+from .views import test_view
 
 urlpatterns = [
-    path("query/", include("api.urls")),
+    path("query/", test_view),
 ]
