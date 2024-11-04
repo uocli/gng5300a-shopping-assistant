@@ -40,8 +40,9 @@ def query_view(request):
     # We can reuse the tutorial questions from part 1 to see how it does.
 
     events = graph.stream({"messages": ("user", query)}, config, stream_mode="values")
+    message = ""
     for event in events:
-        _print_event(event, _printed)
+        message = _print_event(event, _printed)
     snapshot = graph.get_state(config)
     while snapshot.next:
         # We have an interrupt! The agent is trying to use a tool, and the user can approve or deny it
@@ -75,4 +76,4 @@ def query_view(request):
                 config,
             )
         snapshot = graph.get_state(config)
-    return JsonResponse({"message": "Success"}, status=200)
+    return JsonResponse({"message": message}, status=200)
