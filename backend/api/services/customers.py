@@ -5,7 +5,7 @@ from langchain_core.tools import tool
 
 from ..core.state import State
 from ..models import Customer, Order
-from ..serializers import OrderSerializer, ProductSerializer
+from ..serializers import ProductSerializer
 
 
 @tool

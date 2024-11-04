@@ -1,5 +1,3 @@
-from typing import Literal
-
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.constants import START, END
 from langgraph.graph import StateGraph
@@ -7,7 +5,7 @@ from langgraph.prebuilt import tools_condition
 
 from ..services.customers import user_info
 from ..utilities import create_tool_node_with_fallback
-from .state import (
+from .assistant import (
     sensitive_tool_names,
     State,
     Assistant,
