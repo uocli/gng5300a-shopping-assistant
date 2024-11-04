@@ -3,10 +3,9 @@ import { Grid2 as Grid, Typography } from "@mui/material";
 import Question from "./components/Question";
 import Response from "./components/Response";
 import { useState } from "react";
-import axios from "axios";
 import LinearProgressBar from "./components/LinearProgressBar";
 import Customer from "./components/Customer";
-import http from "./helpers/http-common";
+import http from "./helpers/HttpCommon";
 
 const App = () => {
   const [customerID, setCustomerID] = useState("");
