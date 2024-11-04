@@ -5,8 +5,10 @@ import Response from "./components/Response";
 import { useState } from "react";
 import axios from "axios";
 import LinearProgressBar from "./components/LinearProgressBar";
+import Customer from "./components/Customer";
 
 const App = () => {
+  const [customerID, setCustomerID] = useState("");
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
   const handleSubmit = (userQuery) => {
@@ -23,6 +25,9 @@ const App = () => {
         setLoading(false);
       });
   };
+  const handleCustomerID = (customerID) => {
+    setCustomerID(customerID);
+  };
   return (
     <Grid container className="App">
       <Grid size={12}>
@@ -30,7 +35,12 @@ const App = () => {
           LangChain Shopping Assistant
         </Typography>
       </Grid>
-      <Question handleSubmit={handleSubmit} loading={loading} />
+      <Customer handleSubmit={handleCustomerID} />
+      <Question
+        customerID={customerID}
+        handleSubmit={handleSubmit}
+        loading={loading}
+      />
       <LinearProgressBar loading={loading} />
       <Response response={response} />
     </Grid>
