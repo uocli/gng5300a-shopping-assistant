@@ -1,4 +1,4 @@
-import { Box, Button, Grid2 as Grid, TextField } from "@mui/material";
+import { Box, Grid2 as Grid, TextField } from "@mui/material";
 import { useState } from "react";
 
 const Question = (props) => {
@@ -24,7 +24,7 @@ const Question = (props) => {
             alignItems="center"
           >
             <TextField
-              disabled={loading}
+              disabled={loading || !props.customerID}
               fullWidth
               label="Type in your question here"
               id="fullWidth"
