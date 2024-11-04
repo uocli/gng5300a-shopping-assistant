@@ -14,6 +14,9 @@ const Response = (props) => {
             alignItems="center"
           >
             <TextField
+              maxRows={10}
+              minRows={10}
+              multiline
               label="Response"
               fullWidth
               defaultValue=""
