@@ -6,7 +6,7 @@ from langchain_core.messages import ToolMessage
 
 from .core.langchaingraph import graph
 from .services.customers import get_user_info
-from .utilities import _print_event
+from .helpers.utilities import print_event
 
 
 @csrf_exempt
@@ -43,7 +43,7 @@ def query_view(request):
     events = graph.stream({"messages": ("user", query)}, config, stream_mode="values")
     message = ""
     for event in events:
-        message = _print_event(event, _printed)
+        message = print_event(event, _printed)
     # snapshot = graph.get_state(config)
     # while snapshot.next:
     #     # We have an interrupt! The agent is trying to use a tool, and the user can approve or deny it

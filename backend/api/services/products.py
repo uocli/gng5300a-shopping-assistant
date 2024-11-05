@@ -1,7 +1,7 @@
 from langchain_core.tools import tool
 
 from ..models import Product, Order
-from ..serializers import ProductSerializer
+from ..helpers.serializers import ProductSerializer
 
 
 @tool

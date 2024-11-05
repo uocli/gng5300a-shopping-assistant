@@ -2,7 +2,7 @@ from django.db.models import Prefetch
 from langchain_core.tools import tool
 
 from ..models import Order, OrderItem, Product, Customer
-from ..serializers import OrderWithItemsSerializer
+from ..helpers.serializers import OrderWithItemsSerializer
 
 
 @tool

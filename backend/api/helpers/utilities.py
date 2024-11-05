@@ -24,7 +24,7 @@ def create_tool_node_with_fallback(tools: list) -> dict:
     )
 
 
-def _print_event(event: dict, _printed: set, max_length=1500) -> str:
+def print_event(event: dict, _printed: set, max_length=1500) -> str:
     msg_repr = ""
     current_state = event.get("dialog_state")
     if current_state:
