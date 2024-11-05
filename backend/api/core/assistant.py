@@ -12,6 +12,7 @@ from ..services.customers import fetch_user_order_information
 from ..services.products import (
     get_product,
     search_products,
+    get_product_by_name,
 )
 
 load_dotenv()
@@ -75,13 +76,14 @@ assistant_prompt = ChatPromptTemplate.from_messages(
 safe_tools = [
     TavilySearchResults(max_results=1),
     fetch_user_order_information,
+    search_products,
+    get_product_by_name,
 ]
 
 # These tools all change the user's reservations.
 # The user has the right to control what decisions are made
 sensitive_tools = [
     get_product,
-    search_products,
 ]
 sensitive_tool_names = {t.name for t in sensitive_tools}
 # Our LLM doesn't have to know which nodes it has to route to. In its 'mind', it's just invoking functions.

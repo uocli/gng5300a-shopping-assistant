@@ -35,3 +35,16 @@ def search_products(
         products = products.filter(category__icontains=category)
     products = products[:limit]
     return products
+
+
+@tool
+def get_product_by_name(name: str) -> dict:
+    """
+    Get product by product name.
+    :param name:
+    :return: a product object
+    """
+    products = Product.objects.filter(name__icontains=name)
+    if products is None:
+        return ProductSerializer().data
+    return ProductSerializer(products.first()).data
