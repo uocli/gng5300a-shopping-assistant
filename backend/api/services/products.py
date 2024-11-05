@@ -34,11 +34,13 @@ def search_products(
     """
     products = Product.objects.all()
     if name:
-        products = products.filter(name__icontains=name)
+        products = products.filter(name__icontains=name, quantity_in_store__gt=0)
     if category:
-        products = products.filter(category__icontains=category)
+        products = products.filter(
+            category__icontains=category, quantity_in_store__gt=0
+        )
     products = products[:limit]
-    return products
+    return ProductSerializer(products, many=True).data
 
 
 @tool

@@ -25,7 +25,7 @@ const Customer = (props) => {
               fullWidth
               label="Type in your Customer ID"
               placeholder="Press Enter to submit"
-              id="fullWidth"
+              color="warning"
               value={customerID}
               onChange={(e) => setCustomerID(e.target.value)}
             />
