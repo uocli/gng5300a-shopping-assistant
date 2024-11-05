@@ -2,7 +2,7 @@ from django.db.models import Prefetch
 from langchain_core.tools import tool
 
 from ..models import Order, OrderItem, Product, Customer
-from ..serializers import OrderWithItemsSerializer, ResponseSerializer
+from ..serializers import OrderWithItemsSerializer
 
 
 @tool
@@ -34,13 +34,9 @@ def update_cart(customer_id: int, product_id: int, quantity: int) -> dict:
     product = Product.objects.get(id=product_id)
     customer = Customer.objects.get(id=customer_id)
     if product is None:
-        return ResponseSerializer(
-            {"message": f"Product with ID {product_id} not found.", "data": None}
-        ).data
+        return {"message": f"Product with ID {product_id} not found."}
     if customer is None:
-        return ResponseSerializer(
-            {"message": f"Customer with ID {customer_id} not found.", "data": None}
-        ).data
+        return {"message": f"Customer with ID {customer_id} not found."}
     orders = Order.objects.filter(customer_id=customer_id, status="Draft")
     if orders:
         # if there is a draft order (cart), use it, fetch all order items for the order
@@ -77,13 +73,9 @@ def add_a_product_to_cart(product_id: int, quantity: int, customer_id: int) -> d
     product = Product.objects.get(id=product_id)
     customer = Customer.objects.get(id=customer_id)
     if product is None or product.quantity_in_store < quantity:
-        return ResponseSerializer(
-            {"message": f"Product with ID {product_id} not found.", "data": None}
-        ).data
+        return {"message": f"Product with ID {product_id} not found."}
     if customer is None:
-        return ResponseSerializer(
-            {"message": f"Customer with ID {customer_id} not found.", "data": None}
-        ).data
+        return {"message": f"Customer with ID {customer_id} not found."}
     orders = Order.objects.filter(customer_id=customer_id, status="Draft")
     if orders:
         # if there is a draft order (cart), use it, fetch all order items for the order

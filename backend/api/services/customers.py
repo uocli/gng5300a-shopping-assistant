@@ -6,33 +6,27 @@ from langchain_core.tools import tool
 from ..core.state import State
 from ..models import Customer, Order
 from ..serializers import (
-    ProductSerializer,
     CustomerSerializer,
-    ResponseSerializer,
     OrderItemSerializer,
 )
 
 
 @tool
-def fetch_user_order_information(config: RunnableConfig) -> list[dict]:
-    """Fetch all orders for the user along with corresponding product information.
+def fetch_user_and_cart_info(config: RunnableConfig) -> list[dict]:
+    """Fetch all items in the cart for the user along with corresponding product information.
 
     Returns:
-        A list of dictionaries where each dictionary contains the order details, including the products.
+        A list of dictionaries where each dictionary contains user balance, the cart details, including the products.
     """
     configuration = config.get("configurable", {})
     customer_id = configuration.get("customer_id", None)
     if not customer_id:
-        return ResponseSerializer(
-            {"message": "No Customer ID configured."}, data=None
-        ).data
+        return [{"message": "No Customer ID configured."}]
     customer = Customer.objects.filter(id=customer_id)
     if customer is None:
-        return ResponseSerializer(
-            {"message": f"Customer with ID {customer_id} not found."}, data=None
-        ).data
+        return [{"message": f"Customer with ID {customer_id} not found."}]
     customer = customer.first()
-    orders = Order.objects.filter(customer_id=customer_id).all()
+    orders = Order.objects.filter(customer_id=customer_id, status="Draft").all()
     results = [CustomerSerializer(customer).data]
     for order in orders:
         order_to_items = {
@@ -45,7 +39,7 @@ def fetch_user_order_information(config: RunnableConfig) -> list[dict]:
 
 
 def user_info(state: State):
-    return {"user_info": fetch_user_order_information.invoke({})}
+    return {"user_info": fetch_user_and_cart_info.invoke({})}
 
 
 def get_user_info(customer_id: int, thread_id: str) -> dict:
