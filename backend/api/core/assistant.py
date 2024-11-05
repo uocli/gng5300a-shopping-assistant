@@ -8,7 +8,7 @@ from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 
 from .state import State
-from ..services.customers import fetch_user_order_information
+from ..services.customers import fetch_user_and_cart_info
 from ..services.products import (
     search_products,
     get_product_by_name,
@@ -19,6 +19,10 @@ from ..services.carts import (
     get_current_cart,
     update_cart,
     add_a_product_to_cart,
+)
+
+from ..services.orders import (
+    place_order,
 )
 
 load_dotenv()
@@ -81,7 +85,7 @@ assistant_prompt = ChatPromptTemplate.from_messages(
 # "Read"-only tools (such as retrievers) don't need a user confirmation to use
 safe_tools = [
     TavilySearchResults(max_results=1),
-    fetch_user_order_information,
+    fetch_user_and_cart_info,
     search_products,
     get_product_by_name,
     get_product_by_category,
@@ -89,6 +93,7 @@ safe_tools = [
     update_cart,
     add_a_product_to_cart,
     recommend_products,
+    place_order,
 ]
 
 # These tools all change the user's reservations.
