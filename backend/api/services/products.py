@@ -48,3 +48,16 @@ def get_product_by_name(name: str) -> dict:
     if products is None:
         return ProductSerializer().data
     return ProductSerializer(products.first()).data
+
+
+@tool
+def get_product_by_category(category: str) -> list[dict]:
+    """
+    Get product by product category.
+    :param category:
+    :return: a list of product objects
+    """
+    products = Product.objects.filter(category__icontains=category)
+    if products is None:
+        return ProductSerializer().data
+    return ProductSerializer(products, many=True).data

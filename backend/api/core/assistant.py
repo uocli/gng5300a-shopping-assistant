@@ -13,6 +13,7 @@ from ..services.products import (
     get_product,
     search_products,
     get_product_by_name,
+    get_product_by_category,
 )
 
 load_dotenv()
@@ -78,6 +79,7 @@ safe_tools = [
     fetch_user_order_information,
     search_products,
     get_product_by_name,
+    get_product_by_category,
 ]
 
 # These tools all change the user's reservations.
