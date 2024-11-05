@@ -38,4 +38,4 @@ class OrderWithItemsSerializer(BaseDataSerializer):
 
     class Meta:
         model = Order
-        fields = ("id", "customer", "status", "order_date", "items")
+        fields = ("id", "customer_id", "status", "order_date", "items")

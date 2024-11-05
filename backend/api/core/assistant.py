@@ -10,10 +10,12 @@ from dotenv import load_dotenv
 from .state import State
 from ..services.customers import fetch_user_order_information
 from ..services.products import (
-    get_product,
     search_products,
     get_product_by_name,
     get_product_by_category,
+)
+from ..services.carts import (
+    get_current_cart,
     add_a_product_to_cart,
 )
 
@@ -81,14 +83,13 @@ safe_tools = [
     search_products,
     get_product_by_name,
     get_product_by_category,
+    get_current_cart,
     add_a_product_to_cart,
 ]
 
 # These tools all change the user's reservations.
 # The user has the right to control what decisions are made
-sensitive_tools = [
-    get_product,
-]
+sensitive_tools = []
 sensitive_tool_names = {t.name for t in sensitive_tools}
 # Our LLM doesn't have to know which nodes it has to route to. In its 'mind', it's just invoking functions.
 assistant_runnable = assistant_prompt | llm.bind_tools(safe_tools + sensitive_tools)
