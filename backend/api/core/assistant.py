@@ -16,6 +16,7 @@ from ..services.products import (
 )
 from ..services.carts import (
     get_current_cart,
+    update_cart,
     add_a_product_to_cart,
 )
 
@@ -84,6 +85,7 @@ safe_tools = [
     get_product_by_name,
     get_product_by_category,
     get_current_cart,
+    update_cart,
     add_a_product_to_cart,
 ]
 

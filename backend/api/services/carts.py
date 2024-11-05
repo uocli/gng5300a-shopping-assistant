@@ -23,6 +23,49 @@ def get_current_cart(customer_id: int) -> dict:
 
 
 @tool
+def update_cart(customer_id: int, product_id: int, quantity: int) -> dict:
+    """
+    Update the quantity of a product in the cart.
+    :param customer_id:
+    :param product_id:
+    :param quantity: the new quantity of the product, 0 means removing the product from the cart
+    :return: an updated Cart
+    """
+    product = Product.objects.get(id=product_id)
+    customer = Customer.objects.get(id=customer_id)
+    if product is None:
+        return ResponseSerializer(
+            {"message": f"Product with ID {product_id} not found.", "data": None}
+        ).data
+    if customer is None:
+        return ResponseSerializer(
+            {"message": f"Customer with ID {customer_id} not found.", "data": None}
+        ).data
+    orders = Order.objects.filter(customer_id=customer_id, status="Draft")
+    if orders:
+        # if there is a draft order (cart), use it, fetch all order items for the order
+        cart = orders.first()
+        for item in cart.items.all():
+            if item.product_id == product_id:
+                if quantity == 0:
+                    item.delete()
+                    if cart.items.count() == 0:
+                        cart.delete()
+                else:
+                    # TODO: if the quantity is more than the available quantity in store, return an error
+                    item.quantity = quantity
+                    item.save()
+    carts = Order.objects.filter(
+        customer_id=customer_id, status="Draft"
+    ).prefetch_related(
+        Prefetch("items", queryset=OrderItem.objects.select_related("product"))
+    )
+    if carts is None:
+        return OrderWithItemsSerializer().data
+    return OrderWithItemsSerializer(carts.first()).data
+
+
+@tool
 def add_a_product_to_cart(product_id: int, quantity: int, customer_id: int) -> dict:
     """
     Add a product to the cart.
@@ -76,7 +119,11 @@ def add_a_product_to_cart(product_id: int, quantity: int, customer_id: int) -> d
     # reduce the quantity of the product in the store
     product.quantity_in_store -= quantity
     product.save()
-    cart = Order.objects.filter(id=order.id).prefetch_related(
-        Prefetch("items", queryset=OrderItem.objects.select_related("order"))
+    carts = Order.objects.filter(
+        customer_id=customer_id, status="Draft"
+    ).prefetch_related(
+        Prefetch("items", queryset=OrderItem.objects.select_related("product"))
     )
-    return OrderWithItemsSerializer(cart).data
+    if carts is None:
+        return OrderWithItemsSerializer().data
+    return OrderWithItemsSerializer(carts.first()).data
