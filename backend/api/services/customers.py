@@ -5,7 +5,12 @@ from langchain_core.tools import tool
 
 from ..core.state import State
 from ..models import Customer, Order
-from ..serializers import ProductSerializer, CustomerSerializer
+from ..serializers import (
+    ProductSerializer,
+    CustomerSerializer,
+    ResponseSerializer,
+    OrderItemSerializer,
+)
 
 
 @tool
@@ -18,18 +23,22 @@ def fetch_user_order_information(config: RunnableConfig) -> list[dict]:
     configuration = config.get("configurable", {})
     customer_id = configuration.get("customer_id", None)
     if not customer_id:
-        raise ValueError("No Customer ID configured.")
+        return ResponseSerializer(
+            {"message": "No Customer ID configured."}, data=None
+        ).data
     customer = Customer.objects.filter(id=customer_id)
     if customer is None:
-        raise ValueError(f"Customer with ID {customer_id} not found.")
+        return ResponseSerializer(
+            {"message": f"Customer with ID {customer_id} not found."}, data=None
+        ).data
     customer = customer.first()
-
-    orders = (
-        Order.objects.filter(customer_id=customer_id).prefetch_related("products").all()
-    )
+    orders = Order.objects.filter(customer_id=customer_id).all()
     results = [CustomerSerializer(customer).data]
     for order in orders:
-        order_to_items = {order.id: [ProductSerializer(order.products, many=True).data]}
+        order_to_items = {
+            "order_id": order.id,
+            "items": [OrderItemSerializer(order.items.all(), many=True).data],
+        }
         results.append(order_to_items)
 
     return results

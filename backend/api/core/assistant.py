@@ -14,6 +14,7 @@ from ..services.products import (
     search_products,
     get_product_by_name,
     get_product_by_category,
+    add_a_product_to_cart,
 )
 
 load_dotenv()
@@ -80,6 +81,7 @@ safe_tools = [
     search_products,
     get_product_by_name,
     get_product_by_category,
+    add_a_product_to_cart,
 ]
 
 # These tools all change the user's reservations.

@@ -1,23 +1,41 @@
 from rest_framework import serializers
 
-from .models import Product, Order, Customer
+from .models import Product, Order, Customer, OrderItem
 
 
-class CustomerSerializer(serializers.ModelSerializer):
+class BaseDataSerializer(serializers.ModelSerializer):
+    pass
+
+
+class ResponseSerializer(serializers.Serializer):
+    message = serializers.CharField(max_length=255)
+    data = BaseDataSerializer(read_only=True)
+
+    class Meta:
+        fields = ("message", "data")
+
+
+class CustomerSerializer(BaseDataSerializer):
     class Meta:
         model = Customer
-        fields = ("account_balance",)
+        fields = "__all__"
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class ProductSerializer(BaseDataSerializer):
     class Meta:
         model = Product
         fields = "__all__"
 
 
-class OrderSerializer(serializers.ModelSerializer):
-    order_date = serializers.DateTimeField()
+class OrderItemSerializer(BaseDataSerializer):
+    class Meta:
+        model = OrderItem
+        fields = "__all__"
+
+
+class OrderWithItemsSerializer(BaseDataSerializer):
+    items = OrderItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
-        fields = ("quantity", "total_price", "order_date", "status")
+        fields = ("id", "customer", "status", "order_date", "items")
