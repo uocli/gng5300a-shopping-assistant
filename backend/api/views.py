@@ -13,8 +13,9 @@ from .utilities import _print_event
 def query_view(request):
     data = json.loads(request.body.decode("utf-8"))
     customer_id = data.get("customerID", 0)
+    thread_id = data.get("threadID", 0)
     query = data.get("query", "")
-    user_info = get_user_info(customer_id)
+    user_info = get_user_info(customer_id, thread_id)
     thread_id = user_info["thread_id"]
     if thread_id is None:
         return JsonResponse({"message": "User not found"}, status=404)
@@ -76,4 +77,4 @@ def query_view(request):
                 config,
             )
         snapshot = graph.get_state(config)
-    return JsonResponse({"message": message}, status=200)
+    return JsonResponse({"message": message, "threadID": thread_id}, status=200)

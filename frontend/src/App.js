@@ -9,13 +9,15 @@ import http from "./helpers/HttpCommon";
 
 const App = () => {
   const [customerID, setCustomerID] = useState("");
+  const [threadID, setThreadID] = useState("");
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
   const handleSubmit = (userQuery) => {
     setLoading(true);
     http
-      .post("/query/", { query: userQuery, customerID: +customerID })
+      .post("/query/", { query: userQuery, customerID: +customerID, threadID })
       .then((r) => {
+        setThreadID(r.data.threadID);
         setResponse(r.data.message);
       })
       .catch((error) => {

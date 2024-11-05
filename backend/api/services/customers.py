@@ -35,9 +35,10 @@ def user_info(state: State):
     return {"user_info": fetch_user_order_information.invoke({})}
 
 
-def get_user_info(customer_id: int) -> dict:
+def get_user_info(customer_id: int, thread_id: str) -> dict:
     """
     Get user info by customer ID.
+    :param thread_id:
     :param customer_id:
     :return: a dict contains customer_id and thread_id
     """
@@ -49,5 +50,5 @@ def get_user_info(customer_id: int) -> dict:
         }
     return {
         "customer_id": customer_id,
-        "thread_id": str(uuid.uuid4()),
+        "thread_id": str(uuid.uuid4()) if not thread_id else thread_id,
     }
