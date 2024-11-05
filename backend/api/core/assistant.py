@@ -13,6 +13,7 @@ from ..services.products import (
     search_products,
     get_product_by_name,
     get_product_by_category,
+    recommend_products,
 )
 from ..services.carts import (
     get_current_cart,
@@ -87,6 +88,7 @@ safe_tools = [
     get_current_cart,
     update_cart,
     add_a_product_to_cart,
+    recommend_products,
 ]
 
 # These tools all change the user's reservations.

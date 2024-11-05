@@ -1,7 +1,7 @@
 from langchain_core.tools import tool
 
-from ..models import Product
-from ..serializers import ProductSerializer
+from ..models import Product, Order
+from ..serializers import ProductSerializer, ResponseSerializer
 
 
 @tool
@@ -50,3 +50,34 @@ def get_product_by_category(category: str) -> list[dict]:
     if products is None:
         return ProductSerializer().data
     return ProductSerializer(products, many=True).data
+
+
+@tool
+def recommend_products(customer_id: int, product_id: int) -> list[dict]:
+    """
+    Recommend products based on the user's purchase history.
+    :param customer_id:
+    :param product_id: if provided, recommend products based on this product category, if not, recommend products based on the user's purchase history
+    :return: a list of recommended products
+    """
+    if product_id:
+        # if product_id is provided, recommend products based on this product category
+        product = Product.objects.get(id=product_id)
+        if product is None:
+            return ResponseSerializer(
+                {"message": f"Product with ID {product_id} not found.", "data": None}
+            ).data
+
+        products = Product.objects.filter(category__icontains=product.category).all()
+        return ProductSerializer(products, many=True).data
+    else:
+        # if product_id is not provided, recommend products based on the user's purchase history
+        purchased_product_id_list = (
+            Order.objects.filter(customer_id=customer_id)
+            .exclude(status="Draft")
+            .values_list("items__product_id", flat=True)
+        )
+
+        return ProductSerializer(
+            Product.objects.filter(product_in=purchased_product_id_list), many=True
+        ).data
