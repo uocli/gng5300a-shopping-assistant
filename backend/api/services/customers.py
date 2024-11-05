@@ -1,3 +1,4 @@
+import decimal
 import uuid
 
 from langchain_core.runnables import RunnableConfig
@@ -59,3 +60,20 @@ def get_user_info(customer_id: int, thread_id: str) -> dict:
         "customer_id": customer_id,
         "thread_id": str(uuid.uuid4()) if not thread_id else thread_id,
     }
+
+
+@tool
+def add_account_balance(customer_id: int, amount: decimal.Decimal) -> dict:
+    """
+    Add account balance for the customer.
+    :param customer_id:
+    :param amount: the amount to add to the account balance
+    :return: a dict contains the new account balance
+    """
+    customer = Customer.objects.get(id=customer_id)
+    if customer is None:
+        return {"message": f"Customer with ID {customer_id} not found."}
+    customer.account_balance += amount
+    customer.save()
+    user_with_cart = fetch_user_and_cart_info.invoke({customer_id: customer_id})
+    return user_with_cart

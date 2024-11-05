@@ -8,7 +8,10 @@ from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 
 from .state import State
-from ..services.customers import fetch_user_and_cart_info
+from ..services.customers import (
+    fetch_user_and_cart_info,
+    add_account_balance,
+)
 from ..services.products import (
     search_products,
     get_product_by_name,
@@ -94,6 +97,7 @@ safe_tools = [
     add_a_product_to_cart,
     recommend_products,
     place_order,
+    add_account_balance,
 ]
 
 # These tools all change the user's reservations.
