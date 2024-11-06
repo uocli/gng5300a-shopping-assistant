@@ -1,9 +1,14 @@
 import { Box, Grid2 as Grid, TextField } from "@mui/material";
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 
-const Question = (props) => {
+const Question = forwardRef(({ customerID, handleSubmit, loading }, ref) => {
   const [userQuery, setUserQuery] = useState("");
-  const { loading } = props;
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      document.querySelectorAll("input")[1].focus();
+    },
+  }));
+
   return (
     <Grid container size={12}>
       <Grid size={3}></Grid>
@@ -13,7 +18,7 @@ const Question = (props) => {
           sx={{ m: 2 }}
           onSubmit={(e) => {
             e.preventDefault();
-            props.handleSubmit(userQuery);
+            handleSubmit(userQuery);
             setUserQuery("");
           }}
         >
@@ -24,10 +29,9 @@ const Question = (props) => {
             alignItems="center"
           >
             <TextField
-              disabled={loading || !props.customerID}
+              disabled={loading || !customerID}
               fullWidth
               label="Type in your question here"
-              id="fullWidth"
               value={userQuery}
               onChange={(e) => setUserQuery(e.target.value)}
             />
@@ -37,5 +41,5 @@ const Question = (props) => {
       <Grid size={3}></Grid>
     </Grid>
   );
-};
+});
 export default Question;

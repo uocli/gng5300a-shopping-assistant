@@ -2,12 +2,13 @@ import "./App.css";
 import { Grid2 as Grid, Typography } from "@mui/material";
 import Question from "./components/Question";
 import Response from "./components/Response";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import LinearProgressBar from "./components/LinearProgressBar";
 import Customer from "./components/Customer";
 import http from "./helpers/HttpCommon";
 
 const App = () => {
+  const questionRef = useRef();
   const [interrupted, setInterrupted] = useState(false);
   const [customerID, setCustomerID] = useState("");
   const [threadID, setThreadID] = useState("");
@@ -36,6 +37,7 @@ const App = () => {
   };
   const handleCustomerID = (customerID) => {
     setCustomerID(customerID);
+    questionRef.current?.focus();
   };
   return (
     <Grid container className="App">
@@ -46,6 +48,7 @@ const App = () => {
       </Grid>
       <Customer handleSubmit={handleCustomerID} />
       <Question
+        ref={questionRef}
         customerID={customerID}
         handleSubmit={handleSubmit}
         loading={loading}
