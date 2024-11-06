@@ -8,6 +8,7 @@ import Customer from "./components/Customer";
 import http from "./helpers/HttpCommon";
 
 const App = () => {
+  const [interrupted, setInterrupted] = useState(false);
   const [customerID, setCustomerID] = useState("");
   const [threadID, setThreadID] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,10 +16,16 @@ const App = () => {
   const handleSubmit = (userQuery) => {
     setLoading(true);
     http
-      .post("/query/", { query: userQuery, customerID: +customerID, threadID })
+      .post("/query/", {
+        query: userQuery,
+        customerID: +customerID,
+        threadID,
+        interrupted,
+      })
       .then((r) => {
         setThreadID(r.data.threadID);
         setResponse(r.data.message);
+        setInterrupted(r.data.interrupted === true);
       })
       .catch((error) => {
         console.log(error);

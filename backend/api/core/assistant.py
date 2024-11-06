@@ -96,13 +96,14 @@ safe_tools = [
     update_cart,
     add_a_product_to_cart,
     recommend_products,
-    place_order,
-    add_account_balance,
 ]
 
 # These tools all change the user's reservations.
 # The user has the right to control what decisions are made
-sensitive_tools = []
+sensitive_tools = [
+    place_order,
+    add_account_balance,
+]
 sensitive_tool_names = {t.name for t in sensitive_tools}
 # Our LLM doesn't have to know which nodes it has to route to. In its 'mind', it's just invoking functions.
 assistant_runnable = assistant_prompt | llm.bind_tools(safe_tools + sensitive_tools)
