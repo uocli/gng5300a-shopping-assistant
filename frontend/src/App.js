@@ -13,9 +13,17 @@ const App = () => {
   const [customerID, setCustomerID] = useState("");
   const [threadID, setThreadID] = useState("");
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState("");
+  const [chatHistory, setChatHistory] = useState([]);
   const handleSubmit = (userQuery) => {
     setLoading(true);
+    setChatHistory((prevState) => [
+      {
+        from: "User",
+        message: userQuery,
+        time: new Date().toLocaleTimeString(),
+      },
+      ...prevState,
+    ]);
     http
       .post("/query/", {
         query: userQuery,
@@ -25,8 +33,15 @@ const App = () => {
       })
       .then((r) => {
         setThreadID(r.data.threadID);
-        setResponse(r.data.message);
         setInterrupted(r.data.interrupted === true);
+        setChatHistory((prevState) => [
+          {
+            from: "Bot",
+            message: r.data.message,
+            time: new Date().toLocaleTimeString(),
+          },
+          ...prevState,
+        ]);
       })
       .catch((error) => {
         console.log(error);
@@ -54,7 +69,7 @@ const App = () => {
         loading={loading}
       />
       <LinearProgressBar loading={loading} />
-      <Response response={response} />
+      <Response history={chatHistory} />
     </Grid>
   );
 };
