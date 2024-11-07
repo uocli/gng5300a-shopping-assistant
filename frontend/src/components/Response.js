@@ -47,6 +47,13 @@ const Response = (props) => {
                           <Typography
                             component="span"
                             variant="body2"
+                            sx={{ color: "text.primary", display: "block" }}
+                          >
+                            {time}
+                          </Typography>
+                          <Typography
+                            component="span"
+                            variant="body2"
                             sx={{ color: "text.primary", display: "inline" }}
                           >
                             {message}
