@@ -1,0 +1,22 @@
+services:
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - shared-data:/app
+      - ./frontend:/app/frontend
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - shared-data:/app
+      - ./backend:/app/backend
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - web
+volumes:
+  shared-data:
