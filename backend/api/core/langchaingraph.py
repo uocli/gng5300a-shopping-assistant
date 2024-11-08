@@ -17,15 +17,13 @@ from .assistant import (
 builder = StateGraph(State)
 
 
-# NEW: The fetch_user_info node runs first, meaning our assistant can see the user's flight information without
-# having to take an action
+# NEW: The fetch_user_info node runs first, meaning our assistant can see
+# the user's cart information without having to take an action
 builder.add_node("fetch_user_info", user_info)
 builder.add_edge(START, "fetch_user_info")
 builder.add_node("assistant", Assistant(assistant_runnable))
-# builder.add_edge(START, "assistant")
 builder.add_node("safe_tools", create_tool_node_with_fallback(safe_tools))
 builder.add_node("sensitive_tools", create_tool_node_with_fallback(sensitive_tools))
-# Define logic
 builder.add_edge("fetch_user_info", "assistant")
 
 
@@ -57,17 +55,3 @@ graph = builder.compile(
     # the assistant continues
     interrupt_before=["sensitive_tools"],
 )
-
-
-def print_graph():
-    from PIL import Image
-    import io
-
-    try:
-        image = Image.open(io.BytesIO(graph.get_graph().draw_mermaid_png()))
-        image.save("graph.png")
-    except:
-        pass
-
-
-# print_graph()
