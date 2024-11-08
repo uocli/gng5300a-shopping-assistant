@@ -39,15 +39,20 @@ def fetch_user_and_cart_info(config: RunnableConfig) -> list[dict]:
 
 
 def user_info(state: State):
+    """
+    Get the user info with his/her cart info.
+    :param state:
+    :return: user info dictionary
+    """
     return {"user_info": fetch_user_and_cart_info.invoke({})}
 
 
-def get_user_info(customer_id: int, thread_id: str) -> dict:
+def get_user_info(customer_id: int) -> dict:
     """
-    Get user info by customer ID.
-    :param thread_id:
+    Get user info by customer ID. Customer ID is the primary key of the Customer model.
+    The thread_id in this app is customer_id.
     :param customer_id:
-    :return: a dict contains customer_id and thread_id
+    :return: a dict contains thread_id
     """
     users = Customer.objects.filter(id=customer_id)
     if len(users) == 0:
@@ -62,9 +67,9 @@ def get_user_info(customer_id: int, thread_id: str) -> dict:
 @tool
 def add_account_balance(customer_id: int, amount: decimal.Decimal) -> dict:
     """
-    Add account balance for the customer.
+    Add money for the customer to his/her account.
     :param customer_id:
-    :param amount: the amount to add to the account balance
+    :param amount: the amount to be added to the account balance
     :return: a dict contains the new account balance
     """
     customer = Customer.objects.get(id=customer_id)
