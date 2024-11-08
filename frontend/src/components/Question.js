@@ -1,13 +1,12 @@
 import { Box, Grid2 as Grid, TextField } from "@mui/material";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const Question = forwardRef(({ customerID, handleSubmit, loading }, ref) => {
+const Question = ({ customerID, handleSubmit, loading, chatHistory }) => {
   const [userQuery, setUserQuery] = useState("");
-  useImperativeHandle(ref, () => ({
-    focus: () => {
-      document.querySelectorAll("input")[1].focus();
-    },
-  }));
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current?.focus(); // Focus on the input field
+  }, [customerID, chatHistory]);
 
   return (
     <Grid size={{ xs: 12, md: 6 }}>
@@ -27,6 +26,7 @@ const Question = forwardRef(({ customerID, handleSubmit, loading }, ref) => {
           alignItems="center"
         >
           <TextField
+            inputRef={inputRef}
             disabled={loading || !customerID}
             fullWidth
             label="Type in your question here"
@@ -37,5 +37,5 @@ const Question = forwardRef(({ customerID, handleSubmit, loading }, ref) => {
       </Box>
     </Grid>
   );
-});
+};
 export default Question;
