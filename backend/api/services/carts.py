@@ -48,7 +48,6 @@ def update_cart(customer_id: int, product_id: int, quantity: int) -> dict:
                     if cart.items.count() == 0:
                         cart.delete()
                 else:
-                    # TODO: if the quantity is more than the available quantity in store, return an error
                     item.quantity = quantity
                     item.save()
     carts = Order.objects.filter(
