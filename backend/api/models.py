@@ -2,10 +2,18 @@ from django.db import models
 
 
 class Customer(models.Model):
+    """
+    A customer model to store the customer's information.
+    """
+
     account_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 
 class Product(models.Model):
+    """
+    A product model to store the product's information.
+    """
+
     name = models.CharField(max_length=255, null=False, blank=False)
     sku = models.CharField(max_length=255, unique=True, null=False, blank=False)
     price = models.DecimalField(
@@ -21,6 +29,10 @@ class Product(models.Model):
 
 
 class Order(models.Model):
+    """
+    Order presents both Order itself and Cart in this app according to its status.
+    """
+
     customer = models.ForeignKey(
         Customer, on_delete=models.CASCADE, related_name="orders"
     )
@@ -28,7 +40,9 @@ class Order(models.Model):
     status = models.CharField(
         max_length=10,
         choices=[
+            # Cart
             ("draft", "Draft"),
+            # Order
             ("ordered", "Ordered"),
             ("shipped", "Shipped"),
             ("delivered", "Delivered"),
@@ -42,6 +56,10 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
+    """
+    Junction table between Order and Product.
+    """
+
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     product_name = models.CharField(max_length=255)
