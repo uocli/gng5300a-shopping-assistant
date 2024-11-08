@@ -14,6 +14,9 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
   const handleSubmit = (userQuery) => {
+    if (!userQuery) {
+      return;
+    }
     setLoading(true);
     setChatHistory((prevState) => [
       {
