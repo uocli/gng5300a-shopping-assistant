@@ -1,5 +1,4 @@
 import decimal
-import uuid
 
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
@@ -51,14 +50,12 @@ def get_user_info(customer_id: int, thread_id: str) -> dict:
     :return: a dict contains customer_id and thread_id
     """
     users = Customer.objects.filter(id=customer_id)
-    if users is None:
+    if len(users) == 0:
         return {
-            "customer_id": None,
             "thread_id": None,
         }
     return {
-        "customer_id": customer_id,
-        "thread_id": str(uuid.uuid4()) if not thread_id else thread_id,
+        "thread_id": customer_id,
     }
 
 
