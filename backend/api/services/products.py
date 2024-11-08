@@ -53,11 +53,12 @@ def get_product_by_category(category: str) -> list[dict]:
 
 
 @tool
-def recommend_products(customer_id: int, product_id: int) -> list[dict]:
+def recommend_products(customer_id: int, product_id: int, limit: int = 5) -> list[dict]:
     """
     Recommend products based on the user's purchase history.
     :param customer_id:
     :param product_id: if provided, recommend products based on this product category, if not, recommend products based on the user's purchase history
+    :param limit: the number of products to recommend
     :return: a list of recommended products
     """
     if product_id:
@@ -75,7 +76,12 @@ def recommend_products(customer_id: int, product_id: int) -> list[dict]:
             .exclude(status="Draft")
             .values_list("items__product_id", flat=True)
         )
-
+        if len(purchased_product_id_list) == 0:
+            return ProductSerializer(
+                Product.objects.all()[:limit],
+                many=True,
+            ).data
         return ProductSerializer(
-            Product.objects.filter(product_in=purchased_product_id_list), many=True
+            Product.objects.filter(id__in=purchased_product_id_list)[:limit],
+            many=True,
         ).data

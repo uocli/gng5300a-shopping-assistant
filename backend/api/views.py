@@ -2,7 +2,7 @@ import json
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from langchain_core.messages import ToolMessage
+from langchain_core.messages import ToolMessage, AIMessage
 
 from .core.langchaingraph import graph
 from .services.customers import get_user_info
@@ -45,11 +45,24 @@ def query_view(request):
         tool_call_id = (
             graph.get_state(config).values["messages"][-1].tool_calls[0]["id"]
         )
-        if query.strip() == "y":
+        if query.strip() == "approve":
             # Approved
             graph.invoke(
                 None,
                 config,
+            )
+            graph.update_state(
+                config,
+                {
+                    "messages": [
+                        AIMessage(
+                            content="Your request has been successfully processed. Let me know if you need anything else."
+                        )
+                    ]
+                },
+                # Which node for this function to act as. It will automatically continue
+                # processing as if this node just ran.
+                as_node="safe_tools",
             )
         else:
             graph.invoke(
@@ -75,7 +88,7 @@ def query_view(request):
         if state.next:
             interrupted = True
             message = (
-                "Do you approve of the above actions? Type 'y' to continue;"
+                "Do you approve of the above actions? Type 'approve' to continue;"
                 " otherwise, explain your requested changed."
             )
     return JsonResponse(
