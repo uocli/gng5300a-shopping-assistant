@@ -29,10 +29,10 @@ const Response = (props) => {
                   <ListItemAvatar>
                     <Avatar
                       sx={{
-                        bgcolor: from === "User" ? deepOrange[500] : green[500],
+                        bgcolor: from === "Bot" ? green[500] : deepOrange[500],
                       }}
                     >
-                      {from === "User" ? <Face6Icon /> : <SmartToyIcon />}
+                      {from === "Bot" ? <SmartToyIcon /> : <Face6Icon />}
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
