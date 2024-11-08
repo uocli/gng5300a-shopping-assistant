@@ -5,13 +5,9 @@ const LinearProgressBar = (props) => {
   return (
     <Grid container size={12}>
       {!!loading ? (
-        <>
-          <Grid size={3}></Grid>
-          <Grid size={6} sx={{ p: 2 }}>
-            <LinearProgress />
-          </Grid>
-          <Grid size={3}></Grid>
-        </>
+        <Grid size={12}>
+          <LinearProgress />
+        </Grid>
       ) : null}
     </Grid>
   );

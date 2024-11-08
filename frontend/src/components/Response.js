@@ -17,58 +17,51 @@ const Response = (props) => {
   const { history } = props || {};
   return (
     <Grid container size={12}>
-      <Grid size={3}></Grid>
-      <Grid size={6}>
-        <Box component="form" sx={{ m: 2 }}>
-          <List
-            sx={{ width: "100%", maxWidth: 800, bgcolor: "background.paper" }}
-          >
-            {history.map(({ message, from, time }, index) => {
-              return (
-                <>
-                  {index === 0 ? null : (
-                    <Divider variant="inset" component="li" />
-                  )}
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Avatar
-                        sx={{
-                          bgcolor:
-                            from === "User" ? deepOrange[500] : green[500],
-                        }}
-                      >
-                        {from === "User" ? <Face6Icon /> : <SmartToyIcon />}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={from}
-                      secondary={
-                        <>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            sx={{ color: "text.primary", display: "block" }}
-                          >
-                            {time}
-                          </Typography>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            sx={{ color: "text.primary", display: "inline" }}
-                          >
-                            {message}
-                          </Typography>
-                        </>
-                      }
-                    />
-                  </ListItem>
-                </>
-              );
-            })}
-          </List>
-        </Box>
-      </Grid>
-      <Grid size={3}></Grid>
+      <Box component="form" sx={{ m: 2 }}>
+        <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+          {history.map(({ message, from, time }, index) => {
+            return (
+              <>
+                {index === 0 ? null : (
+                  <Divider variant="inset" component="li" />
+                )}
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar
+                      sx={{
+                        bgcolor: from === "User" ? deepOrange[500] : green[500],
+                      }}
+                    >
+                      {from === "User" ? <Face6Icon /> : <SmartToyIcon />}
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={from}
+                    secondary={
+                      <>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          sx={{ color: "text.primary", display: "block" }}
+                        >
+                          {time}
+                        </Typography>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          sx={{ color: "text.primary", display: "inline" }}
+                        >
+                          {message}
+                        </Typography>
+                      </>
+                    }
+                  />
+                </ListItem>
+              </>
+            );
+          })}
+        </List>
+      </Box>
     </Grid>
   );
 };

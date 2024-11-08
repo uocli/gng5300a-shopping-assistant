@@ -10,35 +10,31 @@ const Question = forwardRef(({ customerID, handleSubmit, loading }, ref) => {
   }));
 
   return (
-    <Grid container size={12}>
-      <Grid size={3}></Grid>
-      <Grid size={6}>
-        <Box
-          component="form"
-          sx={{ m: 2 }}
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit(userQuery);
-            setUserQuery("");
-          }}
+    <Grid size={{ xs: 12, md: 6 }}>
+      <Box
+        component="form"
+        sx={{ m: 2 }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(userQuery);
+          setUserQuery("");
+        }}
+      >
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
         >
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="center"
-          >
-            <TextField
-              disabled={loading || !customerID}
-              fullWidth
-              label="Type in your question here"
-              value={userQuery}
-              onChange={(e) => setUserQuery(e.target.value)}
-            />
-          </Grid>
-        </Box>
-      </Grid>
-      <Grid size={3}></Grid>
+          <TextField
+            disabled={loading || !customerID}
+            fullWidth
+            label="Type in your question here"
+            value={userQuery}
+            onChange={(e) => setUserQuery(e.target.value)}
+          />
+        </Grid>
+      </Box>
     </Grid>
   );
 });

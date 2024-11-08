@@ -55,7 +55,7 @@ const App = () => {
     questionRef.current?.focus();
   };
   return (
-    <Grid container className="App">
+    <Grid className="App" container>
       <Grid size={12}>
         <Typography variant="h3" component="h3">
           LangChain Shopping Assistant
