@@ -52,18 +52,6 @@ class Assistant:
         return {"messages": result}
 
 
-# Haiku is faster and cheaper, but less accurate
-# llm = ChatAnthropic(model="claude-3-haiku-20240307")
-# llm = ChatAnthropic(model="claude-3-sonnet-20240229", temperature=1)
-# You can update the LLMs, though you may need to update the prompts
-
-
-# llm = ChatOpenAI(
-#     base_url="https://api.studio.nebius.ai/v1/",
-#     api_key=os.getenv("NEBIUS_API_KEY"),
-#     model="meta-llama/Meta-Llama-3.1-70B-Instruct",
-# )
-
 llm = ChatOpenAI(
     api_key=os.getenv("OPENAI_API_KEY"),
     model="gpt-3.5-turbo",
@@ -105,6 +93,7 @@ sensitive_tools = [
     place_order,
     add_account_balance,
 ]
+
 sensitive_tool_names = {t.name for t in sensitive_tools}
 # Our LLM doesn't have to know which nodes it has to route to. In its 'mind', it's just invoking functions.
 assistant_runnable = assistant_prompt | llm.bind_tools(safe_tools + sensitive_tools)
