@@ -5,6 +5,11 @@ from langgraph.prebuilt import ToolNode
 
 
 def handle_tool_error(state) -> dict:
+    """
+    Handle the error when calling a tool.
+    :param state:
+    :return: a message to the user to indicate an error occurred
+    """
     error = state.get("error")
     tool_calls = state["messages"][-1].tool_calls
     return {
@@ -19,12 +24,24 @@ def handle_tool_error(state) -> dict:
 
 
 def create_tool_node_with_fallback(tools: list) -> dict:
+    """
+    Create a tool node with fallbacks.
+    :param tools:
+    :return: a tool node with fallbacks
+    """
     return ToolNode(tools).with_fallbacks(
         [RunnableLambda(handle_tool_error)], exception_key="error"
     )
 
 
 def print_event(event: dict, _printed: set, max_length=1500) -> str:
+    """
+    Print the event.
+    :param event:
+    :param _printed:
+    :param max_length:
+    :return: a message to the user
+    """
     msg_repr = ""
     current_state = event.get("dialog_state")
     if current_state:
