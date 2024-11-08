@@ -17,7 +17,7 @@ const App = () => {
     setLoading(true);
     setChatHistory((prevState) => [
       {
-        from: "User",
+        from: "User: " + customerID,
         message: userQuery,
         time: new Date().toLocaleTimeString(),
       },
