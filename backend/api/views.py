@@ -19,7 +19,7 @@ def query_view(request):
     user_info = get_user_info(customer_id, thread_id)
     thread_id = user_info["thread_id"]
     if thread_id is None:
-        return JsonResponse({"message": "User not found"}, status=404)
+        return JsonResponse({"message": "User not found"}, status=200)
 
     config = {
         "configurable": {
