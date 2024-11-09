@@ -42,29 +42,16 @@ def query_view(request):
     if interrupted:
         # If the process was interrupted by sensitive tools,
         # the user will be asked to approve the actions.
-        tool_call_id = (
-            graph.get_state(config).values["messages"][-1].tool_calls[0]["id"]
-        )
         if query.strip() == "approve":
             # Approved
             graph.invoke(
                 None,
                 config,
             )
-            graph.update_state(
-                config,
-                {
-                    "messages": [
-                        AIMessage(
-                            content="Your request has been successfully processed. Let me know if you need anything else."
-                        )
-                    ]
-                },
-                # Which node for this function to act as. It will automatically continue
-                # processing as if this node just ran.
-                as_node="safe_tools",
-            )
         else:
+            tool_call_id = (
+                graph.get_state(config).values["messages"][-1].tool_calls[0]["id"]
+            )
             graph.invoke(
                 {
                     "messages": [
