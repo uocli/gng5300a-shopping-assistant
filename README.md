@@ -1,0 +1,1 @@
+The project is based on [LangGraph Customer Support Tutorial](https://langchain-ai.github.io/langgraph/tutorials/customer-support/customer-support/) to build a responsive shopping assistant to accomplish some basic shopping functionalities from product searching and recommendation, cart management to order purchasing history. The project is powered mainly by LangGraph and OpenAI.
